@@ -3,11 +3,11 @@ FROM oven/bun:1
 WORKDIR /app
 
 # Copy package files and install dependencies
-COPY client/package*.json ./
+COPY package*.json ./
 RUN bun install
 
 # Copy the rest of the application
-COPY client/ .
+COPY . .
 
 # Build the application
 ENV PORT=3279

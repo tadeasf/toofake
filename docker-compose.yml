@@ -1,10 +1,8 @@
 services:
   toofake:
     build:
-      context: ..
-      dockerfile: client/Dockerfile
-      args:
-        - NODE_ENV=production
+      context: .
+      dockerfile: Dockerfile
     container_name: toofake
     ports:
       - "3279:3279"
