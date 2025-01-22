@@ -1,21 +1,20 @@
-# Stage 1: install dependencies
-FROM node:lts-alpine AS deps
-WORKDIR /app
-COPY client/package*.json .
-RUN npm i
+FROM oven/bun:1
 
-# Stage 2: build
-FROM node:lts-alpine AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
+# Copy package files and install dependencies
+COPY client/package*.json ./
+RUN bun install
+
+# Copy the rest of the application
 COPY client/ .
-ARG NODE_ENV=production
-RUN npm run build
 
-# Stage 3: run
-FROM gcr.io/distroless/nodejs18-debian11
-WORKDIR /app
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/static ./.next/static
-CMD ["server.js"]
+# Build the application
+ENV PORT=3279
+ENV NODE_ENV=production
+RUN bun run build
+
+EXPOSE 3279
+
+# Start the application
+CMD ["bun", "run", "start"]

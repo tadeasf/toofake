@@ -1,0 +1,14 @@
+services:
+  toofake:
+    build:
+      context: ..
+      dockerfile: client/Dockerfile
+      args:
+        - NODE_ENV=production
+    container_name: toofake
+    ports:
+      - "3279:3279"
+    environment:
+      - NODE_ENV=production
+      - PORT=3279
+    restart: unless-stopped
